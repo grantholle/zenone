@@ -46,3 +46,11 @@ it('can add a new shipment', function (array $data, array $errors) {
         'errors' => ['tracking_number']
     ],
 ]);
+
+it('can get shipment details', function () {
+    $shipment = $this->user->shipments()->first();
+
+    $this->getJson(route('shipments.show', $shipment))
+        ->assertOk()
+        ->assertJsonStructure(['data', 'activity']);
+});

@@ -16,6 +16,11 @@ class Shipment extends Model
 
     protected $guarded = [];
 
+    public function getRouteKeyName(): string
+    {
+        return 'tracking_number';
+    }
+
     public function scopeTracking(Builder $builder, string $trackingNumber): void
     {
         $builder->where('tracking_number', $trackingNumber);
@@ -79,5 +84,10 @@ class Shipment extends Model
         }
 
         return "{$address['city']}, {$address['country']}";
+    }
+
+    public function getActivity(): array
+    {
+        return Arr::get($this->fetchFromUps(), 'trackResponse.shipment.0.package.0.activity', []);
     }
 }

@@ -43,7 +43,8 @@ class ShipmentController extends Controller
      */
     public function show(Shipment $shipment)
     {
-        //
+        return (new ShipmentResource($shipment))
+            ->additional(['activity' => $shipment->getActivity()]);
     }
 
     /**
