@@ -38,6 +38,7 @@ return [
     'ups' => [
         'client_id' => env('UPS_CLIENT_ID'),
         'client_secret' => env('UPS_CLIENT_SECRET'),
+        'url' => env('UPS_URL', 'https://wwwcie.ups.com'),
     ],
 
 ];

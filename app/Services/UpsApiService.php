@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class UpsApiService
 {
@@ -22,7 +23,9 @@ class UpsApiService
         $this->client = Http::withHeaders([
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
-        ])->baseUrl('https://wwwcie.ups.com');
+            'transId' => Str::uuid()->toString(),
+            'transactionSrc' => 'testing',
+        ])->baseUrl(config('services.ups.url'));
 
         return $this->setToken();
     }
@@ -44,8 +47,9 @@ class UpsApiService
 
     protected function generateToken(): static
     {
-        $response = $this->client->withBasicAuth($this->clientId, $this->clientSecret)
+        $response = Http::withBasicAuth($this->clientId, $this->clientSecret)
             ->asForm()
+            ->baseUrl(config('services.ups.url'))
             ->post('/security/v1/oauth/token', [
                 'grant_type' => 'client_credentials',
             ]);
