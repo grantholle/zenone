@@ -27,7 +27,15 @@ class ShipmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'tracking_number' => ['required', 'string', 'unique:shipments,tracking_number'],
+        ]);
+
+        $user = $request->user();
+        $shipment = $user->shipments()->create($data);
+        $shipment->cacheFromUps();
+
+        return new ShipmentResource($shipment);
     }
 
     /**
