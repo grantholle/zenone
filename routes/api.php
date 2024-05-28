@@ -9,5 +9,6 @@ Route::middleware(['auth:sanctum'])
             return $request->user();
         });
 
-        Route::apiResource('/shipments', \App\Http\Controllers\Api\ShipmentController::class);
+        Route::middleware('owns.shipment')
+            ->apiResource('/shipments', \App\Http\Controllers\Api\ShipmentController::class);
     });

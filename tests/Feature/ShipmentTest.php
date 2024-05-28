@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+
 beforeEach(function () {
     $this->user = signIn();
     seedShipments($this->user);
@@ -53,6 +55,15 @@ it('can get shipment details', function () {
     $this->getJson(route('shipments.show', $shipment))
         ->assertOk()
         ->assertJsonStructure(['data', 'activity']);
+});
+
+it("can't access someone else's shipment details", function () {
+    $shipment = \App\Models\Shipment::factory()->create([
+        'user_id' => User::factory()->create()->id,
+    ]);
+
+    $this->getJson(route('shipments.show', $shipment))
+        ->assertForbidden();
 });
 
 it('can remove shipment', function () {
