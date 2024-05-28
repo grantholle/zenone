@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Resources\ShipmentResource;
 use App\Services\UpsApiService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -89,5 +90,11 @@ class Shipment extends Model
     public function getActivity(): array
     {
         return Arr::get($this->fetchFromUps(), 'trackResponse.shipment.0.package.0.activity', []);
+    }
+
+    public function toResource(): ShipmentResource
+    {
+        return (new ShipmentResource($this))
+            ->additional(['activity' => $this->getActivity()]);
     }
 }

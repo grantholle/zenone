@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Shipment;
 use App\Models\User;
 
 beforeEach(function () {
@@ -23,7 +24,7 @@ it('can add a new shipment', function (array $data, array $errors) {
             ...$data,
             'user_id' => $this->user->id,
         ]);
-        $shipment = \App\Models\Shipment::tracking($data['tracking_number'])
+        $shipment = Shipment::tracking($data['tracking_number'])
             ->first();
         expect($shipment->weight)->not->toBeNull()
             ->and($shipment->origin)->not->toBeNull()
@@ -58,12 +59,26 @@ it('can get shipment details', function () {
 });
 
 it("can't access someone else's shipment details", function () {
-    $shipment = \App\Models\Shipment::factory()->create([
+    $shipment = Shipment::factory()->create([
         'user_id' => User::factory()->create()->id,
     ]);
 
     $this->getJson(route('shipments.show', $shipment))
         ->assertForbidden();
+});
+
+it('can update shipment', function () {
+    $shipment = $this->user->shipments()->first();
+
+    $this->patchJson(route('shipments.update', $shipment),)
+        ->assertOk()
+        ->assertJsonStructure(['data', 'activity']);
+
+    $updatedShipment = Shipment::find($shipment->id);
+    expect($updatedShipment->weight)->not->toEqual($shipment->weight)
+        ->and($updatedShipment->status)->not->toEqual($shipment->status)
+        ->and($updatedShipment->origin)->not->toEqual($shipment->origin)
+        ->and($updatedShipment->destination)->not->toEqual($shipment->destination);
 });
 
 it('can remove shipment', function () {

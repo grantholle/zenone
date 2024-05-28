@@ -43,8 +43,7 @@ class ShipmentController extends Controller
      */
     public function show(Shipment $shipment)
     {
-        return (new ShipmentResource($shipment))
-            ->additional(['activity' => $shipment->getActivity()]);
+        return $shipment->toResource();
     }
 
     /**
@@ -52,7 +51,9 @@ class ShipmentController extends Controller
      */
     public function update(Request $request, Shipment $shipment)
     {
-        //
+        return $shipment
+            ->cacheFromUps()
+            ->toResource();
     }
 
     /**
