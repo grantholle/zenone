@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\Shipment;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 /*
@@ -27,9 +30,7 @@ uses(TestCase::class, RefreshDatabase::class)->in('Feature');
 |
 */
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
-});
+//
 
 /*
 |--------------------------------------------------------------------------
@@ -42,7 +43,18 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function signIn(): User
 {
-    // ..
+    $user = User::factory()->create();
+
+    test()->actingAs($user);
+
+    return $user;
+}
+
+function seedShipments(User $user, int $count = 5): Collection
+{
+    /** @noinspection PhpIncompatibleReturnTypeInspection */
+    return $user->shipments()
+        ->saveMany(Shipment::factory()->count($count)->make());
 }
