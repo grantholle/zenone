@@ -60,6 +60,9 @@ class ShipmentController extends Controller
      */
     public function destroy(Shipment $shipment)
     {
-        //
+        $shipment->delete();
+
+        return response()
+            ->noContent();
     }
 }

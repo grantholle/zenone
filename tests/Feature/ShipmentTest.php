@@ -54,3 +54,12 @@ it('can get shipment details', function () {
         ->assertOk()
         ->assertJsonStructure(['data', 'activity']);
 });
+
+it('can remove shipment', function () {
+    $shipment = $this->user->shipments()->first();
+
+    $this->deleteJson(route('shipments.destroy', $shipment))
+        ->assertNoContent();
+
+    $this->assertModelMissing($shipment);
+});
