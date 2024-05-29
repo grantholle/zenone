@@ -66,7 +66,7 @@ class Shipment extends Model
 
         $this->update([
             'status' => Arr::get($package, 'currentStatus.description'),
-            'weight' => Arr::get($package, 'weight.weight'),
+            'weight' => Arr::get($package, 'weight.weight').Arr::get($package, 'weight.unitOfMeasurement'),
             'origin' => $this->parseAddress($origin),
             'destination' => $this->parseAddress($destination),
         ]);
@@ -76,15 +76,18 @@ class Shipment extends Model
 
     public function parseAddress(array $address): ?string
     {
-        if (! isset($address['city']) && ! isset($address['country'])) {
+        $city = Arr::get($address, 'address.city');
+        $country = Arr::get($address, 'address.country');
+
+        if (! $city && ! $country) {
             return null;
         }
 
-        if (! isset($address['country'])) {
-            return $address['city'];
+        if (! $country) {
+            return $city;
         }
 
-        return "{$address['city']}, {$address['country']}";
+        return "{$city}, {$country}";
     }
 
     public function getActivity(): array
