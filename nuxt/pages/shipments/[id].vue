@@ -12,15 +12,15 @@
         <dl class="divide-y divide-white/10">
           <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt class="text-sm font-medium leading-6 text-white">Origin</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">{{ shipment.data.origin }}</dd>
+            <dd class="mt-1 text-sm leading-6 text-gray-200 sm:col-span-2 sm:mt-0">{{ shipment.data.origin }}</dd>
           </div>
           <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt class="text-sm font-medium leading-6 text-white">Destination</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">{{ shipment.data.destination }}</dd>
+            <dd class="mt-1 text-sm leading-6 text-gray-200 sm:col-span-2 sm:mt-0">{{ shipment.data.destination }}</dd>
           </div>
           <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt class="text-sm font-medium leading-6 text-white">Weight</dt>
-            <dd class="mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0">{{ shipment.data.weight }}</dd>
+            <dd class="mt-1 text-sm leading-6 text-gray-200 sm:col-span-2 sm:mt-0">{{ shipment.data.weight }}</dd>
           </div>
         </dl>
       </div>
@@ -31,12 +31,16 @@
 </template>
 
 <script setup lang="ts">
-import { getShipment, updateShipment } from "~/composables/useShipments";
-import type { ShipmentResponse } from "~/composables/useShipments";
-import ActivityFeed from "~/components/ActivityFeed.vue";
+import { getShipment, updateShipment } from "~/composables/useShipments"
+import type { ShipmentResponse } from "~/composables/useShipments"
+import ActivityFeed from "~/components/ActivityFeed.vue"
+
+definePageMeta({
+  middleware: ['sanctum:auth'],
+})
 
 const route = useRoute()
-const shipment = ref<ShipmentResponse>({})
+const shipment = ref<ShipmentResponse>({} as ShipmentResponse)
 shipment.value = await getShipment(route.params.id as string)
 
 const update = async () => {
