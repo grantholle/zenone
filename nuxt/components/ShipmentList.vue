@@ -4,7 +4,7 @@
       <div class="min-w-0">
         <div class="flex items-start gap-x-3">
           <p class="text-sm font-semibold leading-6">{{ shipment.tracking_number }}</p>
-          <p :class="[statuses['In progress'], 'rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset']">Coming</p>
+<!--          <p :class="[statuses['In progress'], 'rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset']">Coming</p>-->
         </div>
         <div class="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-300">
           <p class="whitespace-nowrap">

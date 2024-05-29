@@ -16,13 +16,18 @@ export type Activity = {
   }
   status: {
     type: String
-    Description: String
+    description: String
   }
   date: String
   time: String
   gmtDate: String
   gmtOffset: String
   gmtTime: String
+}
+
+export type ShipmentResponse = {
+  data: Shipment
+  activity: Activity[]
 }
 
 export const shipments = ref<Shipment[]>([])
@@ -59,4 +64,18 @@ export async function createShipment(tracking_number: string): Promise<void> {
   } catch (err) {
     errorStore.setBag(err)
   }
+}
+
+export async function getShipment(tracking_number: string): Promise<ShipmentResponse> {
+  const client = useSanctumClient()
+
+  return await client(`/api/shipments/${tracking_number}`)
+}
+
+export async function updateShipment(tracking_number: string): Promise<ShipmentResponse> {
+  const client = useSanctumClient()
+
+  return await client(`/api/shipments/${tracking_number}`, {
+    method: 'PUT',
+  })
 }
