@@ -1,7 +1,9 @@
 <template>
   <div class="flex flex-col min-h-screen w-full justify-between">
     <header class="py-6 px-4 bg-gray-900 flex justify-between shadow-md">
-      <h1 class="text-2xl font-bold text-gray-100">Track it!</h1>
+      <h1 class="text-2xl font-bold text-gray-100">
+        <NuxtLink href="/" class="hover:underline">Track it!</NuxtLink>
+      </h1>
       <div>
         <template v-if="user">
           <span class="text-gray-100 text-sm hidden sm:inline-block">Hi, {{ user.name }}!</span>
