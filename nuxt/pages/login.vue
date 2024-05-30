@@ -35,6 +35,7 @@ const { login } = useSanctumAuth()
 const loading = ref<boolean>(false)
 
 const onSubmit = async () => {
+  store.clearErrors()
   loading.value = true
 
   try {

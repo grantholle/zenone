@@ -32,6 +32,7 @@ fetchShipments()
 const store = useErrorBagStore()
 const trackingNumber = ref<string>('')
 const onSubmit = async () => {
+  store.clearErrors()
   await createShipment(trackingNumber.value)
   trackingNumber.value = ''
 }
