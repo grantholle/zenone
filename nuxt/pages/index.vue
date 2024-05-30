@@ -11,9 +11,7 @@
       </form>
 
       <div class="mt-8 max-w-2xl mx-auto">
-        <div v-if="fetching">
-          Loading...
-        </div>
+        <Spinner v-if="fetching" />
         <p v-else-if="!fetching && shipments.length === 0" class="text-center">
           You're not tracking any shipments yet. Add a tracking number to get started.
         </p>

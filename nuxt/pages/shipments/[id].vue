@@ -1,6 +1,7 @@
 <template>
   <div class="w-full py-6 px-4">
-    <div class="max-w-2xl mx-auto">
+    <Spinner v-if="loading" />
+    <div v-else class="max-w-2xl mx-auto">
       <div class="px-4 sm:px-0 flex items-start justify-between">
         <div>
           <h3 class="text-base font-semibold leading-7 text-white">Shipment Information for {{ shipment.data.tracking_number }}</h3>
@@ -41,9 +42,12 @@ definePageMeta({
 
 const route = useRoute()
 const shipment = ref<ShipmentResponse>({} as ShipmentResponse)
+const loading = ref<boolean>(false)
 shipment.value = await getShipment(route.params.id as string)
 
 const update = async () => {
+  loading.value = true
   shipment.value = await updateShipment(route.params.id as string)
+  loading.value = false
 }
 </script>

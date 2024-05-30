@@ -14,7 +14,7 @@
             <AppInput type="password" v-model="form.password" id="password" />
           </div>
           <div>
-            <AppButton type="submit" class="w-full">Log in</AppButton>
+            <AppButton type="submit" class="w-full" :disabled="loading">Log in</AppButton>
           </div>
         </fieldset>
       </form>
@@ -32,13 +32,18 @@ const form = reactive({
 })
 const store = useErrorBagStore()
 const { login } = useSanctumAuth()
+const loading = ref<boolean>(false)
 
 const onSubmit = async () => {
+  loading.value = true
+
   try {
     await login(form)
   } catch (error) {
     store.setBag(error)
     form.password = ''
   }
+
+  loading.value = false
 }
 </script>
